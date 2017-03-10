@@ -37,6 +37,7 @@ public class Writer implements Runnable {
         try {
             FileWriter e = new FileWriter(ToxicityMain.USER_DIR + "toxicwords.txt");
 
+            write(e, "L");
             write(e, "gay");
             write(e, "die");
             write(e, "kys");
@@ -44,8 +45,10 @@ public class Writer implements Runnable {
             write(e, "idiot");
             write(e, "r bad");
             write(e, "bitch");
+            write(e, "pussy");
             write(e, "drown");
             write(e, "death");
+            write(e, "vagina");
             write(e, "faggot");
             write(e, "retard");
             write(e, "are bad");

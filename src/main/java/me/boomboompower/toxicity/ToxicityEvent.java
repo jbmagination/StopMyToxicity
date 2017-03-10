@@ -19,12 +19,13 @@ package me.boomboompower.toxicity;
 
 import me.boomboompower.toxicity.events.ClientChatEvent;
 import me.boomboompower.toxicity.gui.CustomChatGUI;
-
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.lang.reflect.Field;
 
 public class ToxicityEvent {
 
@@ -45,8 +46,20 @@ public class ToxicityEvent {
     public void onGuiOpen(GuiOpenEvent event) {
         if (ToxicityMain.getInstance().enabled) {
             if (event.gui instanceof GuiChat) {
-                event.gui = new CustomChatGUI();
+                event.gui = new CustomChatGUI(from((GuiChat) event.gui));
             }
         }
+    }
+
+    private String from(GuiChat previous) {
+        String s = "";
+        try {
+            Field f = previous.getClass().getDeclaredFields()[8];
+
+            f.setAccessible(true);
+
+            s = String.valueOf(f.get(previous));
+        } catch (Exception ex) { ex.printStackTrace(); }
+        return s;
     }
 }
