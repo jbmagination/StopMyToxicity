@@ -63,7 +63,7 @@ public class ToxicityCommand implements ICommand {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-        return new ArrayList<String>();
+        return null;
     }
 
     @Override

@@ -81,13 +81,14 @@ public class ToxicityMain {
         return Pattern.compile(Pattern.quote(contains), Pattern.CASE_INSENSITIVE).matcher(message).find();
     }
 
-    private void registerCommands(Object... command) {
-        try {
-            for (Object o : command) {
-                ClientCommandHandler.instance.registerCommand((ICommand) o);
+    private void registerCommands(ICommand... command) {
+        for (ICommand iCommand : command) {
+            try {
+                ClientCommandHandler.instance.registerCommand(iCommand);
+            } catch (Exception ex) {
+                // Shouldnt' happen
+                ex.printStackTrace();
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 

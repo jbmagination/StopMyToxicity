@@ -18,6 +18,7 @@
 package me.boomboompower.toxicity.gui;
 
 import me.boomboompower.toxicity.events.ClientChatEvent;
+
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.network.play.client.C14PacketTabComplete;
@@ -25,6 +26,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.MinecraftForge;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
