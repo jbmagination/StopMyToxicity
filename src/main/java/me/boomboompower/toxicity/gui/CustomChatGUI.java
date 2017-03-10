@@ -20,12 +20,14 @@ package me.boomboompower.toxicity.gui;
 import me.boomboompower.toxicity.events.ClientChatEvent;
 
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.MinecraftForge;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -34,6 +36,29 @@ public class CustomChatGUI extends GuiChat {
 
     private boolean playerNamesFound;
     private boolean waitingOnAutocomplete;
+
+    private int sentHistoryCursor = -1;
+
+    private String defaultText;
+
+    public CustomChatGUI() {
+    }
+
+    public CustomChatGUI(String preText) {
+        this.defaultText = preText;
+    }
+
+    @Override
+    public void initGui() {
+        Keyboard.enableRepeatEvents(true);
+        this.sentHistoryCursor = this.mc.ingameGUI.getChatGUI().getSentMessages().size();
+        this.inputField = new GuiTextField(0, this.fontRendererObj, 4, this.height - 12, this.width - 4, 12);
+        this.inputField.setMaxStringLength(100);
+        this.inputField.setEnableBackgroundDrawing(false);
+        this.inputField.setFocused(true);
+        this.inputField.setText(this.defaultText);
+        this.inputField.setCanLoseFocus(false);
+    }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
@@ -84,8 +109,6 @@ public class CustomChatGUI extends GuiChat {
         if (ichatcomponent != null && ichatcomponent.getChatStyle().getChatHoverEvent() != null) {
             this.handleComponentHover(ichatcomponent, mouseX, mouseY);
         }
-
-        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     private void sendAutocompleteRequest(String leftOfCursor, String full) {
