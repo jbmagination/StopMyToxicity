@@ -18,6 +18,7 @@
 package me.boomboompower.toxicity;
 
 import me.boomboompower.toxicity.utils.FileUtils;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
 import net.minecraft.util.EnumChatFormatting;
@@ -35,7 +36,7 @@ import java.util.regex.Pattern;
 @Mod(modid = ToxicityMain.MODID, version = ToxicityMain.VERSION, acceptedMinecraftVersions="*")
 public class ToxicityMain {
 
-    public static final String MODID = "stoptoxicity";
+    public static final String MODID = "stopmytoxicity";
     public static final String VERSION = "1.0.0";
 
     public static String USER_DIR;
@@ -55,7 +56,7 @@ public class ToxicityMain {
         data.version = VERSION;
         data.name = EnumChatFormatting.GOLD + "Hypixel " + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.DARK_RED + " #StopToxicity";
         data.authorList.add("boomboompower");
-        data.description = "We believe it IS possible to help stop toxicity. Stop yourself being toxic with this mod. |" + EnumChatFormatting.RESET + " Made with " + EnumChatFormatting.LIGHT_PURPLE + "<3" + EnumChatFormatting.RESET + " by boomboompower";
+        data.description = "This mod allows you to toggle your chat to prevent you from being able to say toxic things. |" + EnumChatFormatting.RESET + " Made with " + EnumChatFormatting.LIGHT_PURPLE + "<3" + EnumChatFormatting.RESET + " by boomboompower";
     }
 
     @Mod.EventHandler

@@ -18,6 +18,7 @@
 package me.boomboompower.toxicity.events;
 
 import com.google.common.base.Strings;
+
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
