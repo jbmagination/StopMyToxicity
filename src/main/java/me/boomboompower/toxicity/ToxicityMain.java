@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 public class ToxicityMain {
 
     public static final String MODID = "stopmytoxicity";
-    public static final String VERSION = "1.0.1";
+    public static final String VERSION = "1.0.2";
 
     public static String USER_DIR;
 
@@ -86,7 +86,7 @@ public class ToxicityMain {
             try {
                 ClientCommandHandler.instance.registerCommand(iCommand);
             } catch (Exception ex) {
-                // Shouldnt' happen
+                // Shouldn't happen
                 ex.printStackTrace();
             }
         }

@@ -19,6 +19,7 @@ package me.boomboompower.toxicity;
 
 import me.boomboompower.toxicity.events.ClientChatEvent;
 import me.boomboompower.toxicity.gui.CustomChatGUI;
+
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -53,13 +54,26 @@ public class ToxicityEvent {
 
     private String from(GuiChat previous) {
         String s = "";
+
+        Class<?> clazz = previous.getClass();
+
         try {
-            Field f = previous.getClass().getDeclaredFields()[8];
+            Field f = clazz.getDeclaredField("field_146409_v");
 
             f.setAccessible(true);
 
             s = String.valueOf(f.get(previous));
-        } catch (Exception ex) { ex.printStackTrace(); }
+        } catch (Exception ex) {
+            try {
+                Field f = clazz.getDeclaredField("defaultInputFieldText");
+
+                f.setAccessible(true);
+
+                s = String.valueOf(f.get(previous));
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
         return s;
     }
 }
