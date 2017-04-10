@@ -17,63 +17,30 @@
 
 package me.boomboompower.toxicity;
 
-import me.boomboompower.toxicity.events.ClientChatEvent;
 import me.boomboompower.toxicity.gui.CustomChatGUI;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.lang.reflect.Field;
+import org.lwjgl.input.Keyboard;
 
 public class ToxicityEvent {
 
+    Minecraft mc;
+
     public ToxicityEvent() {
+        mc = Minecraft.getMinecraft();
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onChatSend(ClientChatEvent event) {
-        if (!event.getMessage().isEmpty()) {
-            if (ToxicityUtils.containsToxicWord(event.getMessage())) {
-                ToxicityUtils.sendMessage("Your message contained a " + EnumChatFormatting.RED + "blacklisted" + EnumChatFormatting.GRAY + " word!");
-                event.setCanceled(true);
-            }
-        }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onGuiOpen(GuiOpenEvent event) {
+    @SubscribeEvent
+    public void onInventoryOpen(GuiOpenEvent event) {
         if (ToxicityMain.getInstance().enabled) {
             if (event.gui instanceof GuiChat) {
-                event.gui = new CustomChatGUI(from((GuiChat) event.gui));
+                boolean useSlash = Keyboard.isKeyDown(Keyboard.KEY_SLASH);
+                event.gui = new CustomChatGUI(useSlash ? "/" : "");
             }
         }
-    }
-
-    private String from(GuiChat previous) {
-        String s = "";
-
-        Class<?> clazz = previous.getClass();
-
-        try {
-            Field f = clazz.getDeclaredField("field_146409_v");
-
-            f.setAccessible(true);
-
-            s = String.valueOf(f.get(previous));
-        } catch (Exception ex) {
-            try {
-                Field f = clazz.getDeclaredField("defaultInputFieldText");
-
-                f.setAccessible(true);
-
-                s = String.valueOf(f.get(previous));
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-        }
-        return s;
     }
 }
