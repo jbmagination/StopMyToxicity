@@ -17,9 +17,7 @@
 
 package me.boomboompower.toxicity;
 
-import me.boomboompower.toxicity.enums.ToggleType;
-import me.boomboompower.toxicity.utils.Word;
-import me.boomboompower.toxicity.utils.Words;
+import me.boomboompower.toxicity.utils.FileUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommand;
@@ -33,21 +31,20 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 @Mod(modid = ToxicityMain.MODID, version = ToxicityMain.VERSION, acceptedMinecraftVersions="*")
 public class ToxicityMain {
 
     public static final String MODID = "stopmytoxicity";
-    public static final String VERSION = "1.0.3";
+    public static final String VERSION = "1.0.0";
 
     public static String USER_DIR;
 
     private static ToxicityMain instance;
 
-    public static final ArrayList<Word> toxicWords = new ArrayList<Word>();
-
+    public static final ArrayList<String> toxicWords = new ArrayList<String>();
     public boolean enabled = false;
-    public boolean ignoreCommands = false;
 
     public ToxicityMain() {
         instance = this;
@@ -68,30 +65,29 @@ public class ToxicityMain {
         registerCommands(new ToxicityCommand());
 
         USER_DIR = "stoptoxicity" + File.separator + Minecraft.getMinecraft().getSession().getProfile().getId() + File.separator;
-        new Words().add();
-    }
 
-    public void toggle(ToggleType type) {
-        switch (type) {
-            case ENABLED:
-                enabled = !enabled;
-                break;
-            case IGNORE_COMMANDS:
-                ignoreCommands = !ignoreCommands;
-                break;
-            default:
-
+        try {
+            FileUtils.getVars();
+        } catch (Throwable var21) {
+            var21.printStackTrace();
         }
     }
 
-    private void registerCommands(ICommand... command) {
-        for (ICommand iCommand : command) {
-            try {
-                ClientCommandHandler.instance.registerCommand(iCommand);
-            } catch (Exception ex) {
-                // Shouldn't happen
-                ex.printStackTrace();
+    public boolean toggle() {
+        return (enabled = !enabled);
+    }
+
+    public static boolean containsIgnoreCase(String message, String contains) {
+        return Pattern.compile(Pattern.quote(contains), Pattern.CASE_INSENSITIVE).matcher(message).find();
+    }
+
+    private void registerCommands(Object... command) {
+        try {
+            for (Object o : command) {
+                ClientCommandHandler.instance.registerCommand((ICommand) o);
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

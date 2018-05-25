@@ -17,29 +17,35 @@
 
 package me.boomboompower.toxicity;
 
+import me.boomboompower.toxicity.events.ClientChatEvent;
 import me.boomboompower.toxicity.gui.CustomChatGUI;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import org.lwjgl.input.Keyboard;
 
 public class ToxicityEvent {
 
-    Minecraft mc;
-
     public ToxicityEvent() {
-        mc = Minecraft.getMinecraft();
     }
 
-    @SubscribeEvent
-    public void onInventoryOpen(GuiOpenEvent event) {
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onChatSend(ClientChatEvent event) {
+        if (!event.getMessage().isEmpty()) {
+            if (ToxicityUtils.containsToxicWord(event.getMessage())) {
+                ToxicityUtils.sendMessage("Your message contained a " + EnumChatFormatting.RED + "blacklisted" + EnumChatFormatting.GRAY + " word!");
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onGuiOpen(GuiOpenEvent event) {
         if (ToxicityMain.getInstance().enabled) {
             if (event.gui instanceof GuiChat) {
-                boolean useSlash = Keyboard.isKeyDown(Keyboard.KEY_SLASH);
-                event.gui = new CustomChatGUI(useSlash ? "/" : "");
+                event.gui = new CustomChatGUI();
             }
         }
     }
