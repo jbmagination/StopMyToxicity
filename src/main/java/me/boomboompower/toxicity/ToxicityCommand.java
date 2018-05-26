@@ -17,6 +17,8 @@
 
 package me.boomboompower.toxicity;
 
+import me.boomboompower.toxicity.gui.ToxicityGui;
+
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -53,7 +55,7 @@ public class ToxicityCommand implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        send();
+        new ToxicityGui().display();
     }
 
     @Override
@@ -63,7 +65,7 @@ public class ToxicityCommand implements ICommand {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-        return new ArrayList<String>();
+        return null;
     }
 
     @Override
@@ -76,8 +78,4 @@ public class ToxicityCommand implements ICommand {
         return 0;
     }
 
-    private void send() {
-        String status = (ToxicityMain.getInstance().toggle() ? EnumChatFormatting.GREEN + "enabled" : EnumChatFormatting.RED + "disabled") + EnumChatFormatting.GRAY + "!";
-        ToxicityUtils.sendMessage("Toxicity filtering has been " + status);
-    }
 }

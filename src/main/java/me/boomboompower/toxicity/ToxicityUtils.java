@@ -21,20 +21,37 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.regex.Pattern;
+
 public class ToxicityUtils {
 
-    public static boolean containsToxicWord(String message) {
-        boolean isToxic = false;
+    public static boolean containsToxicWord(final String message) {
+        if (ToxicityMain.getInstance().ignoreCommands && message.toCharArray()[0] == '/') return false;
+        if (message.equalsIgnoreCase("L")) return true;
 
-        message = new ChatComponentText(message).getUnformattedText();
+        final boolean[] isToxic = {false};
 
-        for (String s : ToxicityMain.toxicWords) {
-            if (ToxicityMain.containsIgnoreCase(message, s)) {
-                isToxic = true;
+        ToxicityMain.toxicWords.forEach(word -> {
+            if (containsIgnoreCase(message, word.getWord())) {
+                isToxic[0] = true;
+            }
+        });
+        return isToxic[0];
+    }
+
+    public static String colorize(String textToTranslate) {
+        char[] b = textToTranslate.toCharArray();
+        for (int i = 0; i < b.length - 1; i++) {
+            if (b[i] == '&' && "0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(b[i+1]) > -1) {
+                b[i] = '\u00A7';
+                b[i+1] = Character.toLowerCase(b[i+1]);
             }
         }
+        return new String(b);
+    }
 
-        return isToxic;
+    public static boolean containsIgnoreCase(String message, String contains) {
+        return Pattern.compile(Pattern.quote(contains), Pattern.CASE_INSENSITIVE).matcher(message).find();
     }
 
     public static void sendMessage(String message) {

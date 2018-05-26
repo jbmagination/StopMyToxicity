@@ -15,33 +15,27 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.boomboompower.toxicity.events;
+package me.boomboompower.toxicity.utils;
 
-import com.google.common.base.Strings;
+public class Word {
 
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+    private String word;
+    private Integer level;
 
-@Cancelable
-public class ClientChatEvent extends Event {
-
-    private String message;
-    private final String originalMessage;
-
-    public ClientChatEvent(String message) {
-        this.setMessage(message);
-        this.originalMessage = message;
+    public Word(String word) {
+        this(word, 0);
     }
 
-    public String getMessage() {
-        return message;
+    public Word(String word, Integer level) {
+        this.word = word;
+        this.level = level;
     }
 
-    public void setMessage(String newMessage) {
-        this.message = Strings.emptyToNull(newMessage);
+    public String getWord() {
+        return word;
     }
 
-    public String getOriginalMessage() {
-        return originalMessage;
+    public Integer getLevel() {
+        return level;
     }
 }
